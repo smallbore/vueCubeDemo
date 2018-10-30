@@ -8,10 +8,13 @@
                 <div class="type-list" data-type="31" ref="dataType" @click="jokeTpye($event)">声音</div>
                 <div class="type-list" data-type="41" ref="dataType" @click="jokeTpye($event)">视频</div>
             </div>
-            <div class="back_top" v:if="floorstatus" @click="scrollTo">top</div>
+            <div class="back_top" v-if="floorstatus" @click="scrollTo">top</div>
             <cube-scroll 
             ref="scroll"
+            :scroll-events="['scroll']"
             :options="options"
+            @scroll="onScrollHandle"
+            @pulling-up="onPullingUp"
             @pulling-down="onPullingDown">
             
                 <cube-tab-panels v-model="selectedLabelDefault">
@@ -58,6 +61,34 @@
                                 </div>
                             </li>
                             
+                        </ul>
+                        <ul v-else>
+                            <li>
+                                <img src="@/assets/user-default.png" class="user_img">
+                                <div class="pad10">user name</div>
+                                <div class="cells">
+                                    <div class="cell cell_access">
+                                        <div class="cell__hd">1.</div>
+                                        <div class="cell__bd tl">我的资料</div>
+                                        <div class="cell__ft"></div>
+                                    </div>
+                                    <div class="cell cell_access">
+                                        <div class="cell__hd">2.</div>
+                                        <div class="cell__bd tl">我的文档</div>
+                                        <div class="cell__ft"></div>
+                                    </div>
+                                    <div class="cell cell_access">
+                                        <div class="cell__hd">3.</div>
+                                        <div class="cell__bd tl">我的列表</div>
+                                        <div class="cell__ft"></div>
+                                    </div>
+                                    <div class="cell cell_access">
+                                        <div class="cell__hd">4.</div>
+                                        <div class="cell__bd tl">我的列表</div>
+                                        <div class="cell__ft"></div>
+                                    </div>
+                                </div>
+                            </li>
                         </ul>
                         
                     </cube-tab-panel>
@@ -129,7 +160,9 @@ export default {
                     stop: 40,
                     txt: '更新成功'
                 },
-                pullUpLoad: this.pullUpLoadObj,
+                pullUpLoad: {
+                    threshold: 0
+                },
                 scrollbar: true,
                 startY: this.startY  
             }
@@ -140,8 +173,11 @@ export default {
         clickHandler (label) {
         // if you clicked home tab, then print 'Home'
             console.log(label)
+            this.floorstatus = false; 
             this.selectedLabelDefault = label
+            this.scrollTo();
             this.$refs.scroll.forceUpdate()
+            this.$refs.scroll.refresh()
         },
         changeHandler (label) {
         // if you clicked different tab, this methods can be emitted
@@ -154,9 +190,37 @@ export default {
                     this.$refs.scroll.forceUpdate()
                     this.$refs.scroll.refresh()
                 }) 
+            }else if(label == '笑话'){
+                this.pagenum = 1
+                this.getJokes().then( () =>{
+                    this.$refs.scroll.forceUpdate()
+                    this.$refs.scroll.refresh()
+                })
             }else{
                 this.$refs.scroll.forceUpdate()
             } 
+        },
+        // 上拉加载
+        onPullingUp(){
+            let label = this.selectedLabelDefault
+            if(label == '笑话'){
+                this.pagenum = this.pagenum + 1
+                this.getJokes().then( () =>{
+                    this.$refs.scroll.forceUpdate()
+                    this.$refs.scroll.refresh()
+                })
+            }else{
+                this.$refs.scroll.forceUpdate()
+            }
+        },
+        // 滚动检测
+        onScrollHandle(e){
+            let pageY = -(e.y)
+            if(pageY > 200){
+                this.floorstatus = true; 
+            }else{
+                this.floorstatus = false; 
+            }
         },
         // 英文获取
         getEnglish(){
@@ -188,7 +252,12 @@ export default {
                 data.forEach( e => {
                     e.videoplay = false
                 })
-                this.tabs[2].heroes = data
+                if(num == 1){
+                    this.tabs[2].heroes = data
+                }else{
+                    this.tabs[2].heroes = this.tabs[2].heroes.concat(data)
+                }
+                
                 this.$refs.scroll.refresh()
             })
         },
