@@ -30,6 +30,16 @@ export function getJokes(type,pagenum) {
     })
     return fetch(url, data)
 }
+// 福利图片
+export function getImage(type, pagenum) {
+    const url = URL + '819-1'
+    const data = Object.assign({}, commonParams, {
+        type: type,
+        num:20,
+        page: pagenum
+    })
+    return fetch(url, data)
+}
 
 // 无用的百度图片api，我靠，搞了我一天
 export function getPhotoList() {
@@ -47,5 +57,6 @@ export function getPhotoList() {
 export default{
     getEnglish,
     getImageday,
-    getJokes
+    getJokes,
+    getImage
 }

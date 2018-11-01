@@ -8,6 +8,8 @@ export default {
         goback(){
             this.$emit('toback')
         }
+    },
+    created(){
     }
 }
 </script>

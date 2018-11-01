@@ -62,7 +62,7 @@
                             </li>
                             
                         </ul>
-                        <ul v-else>
+                        <ul v-else-if="index == 3">
                             <li>
                                 <img src="@/assets/user-default.png" class="user_img">
                                 <div class="pad10">user name</div>
@@ -72,11 +72,11 @@
                                         <div class="cell__bd tl">我的资料</div>
                                         <div class="cell__ft"></div>
                                     </div>
-                                    <div class="cell cell_access">
+                                    <router-link to="/secret" class="cell cell_access">
                                         <div class="cell__hd">2.</div>
-                                        <div class="cell__bd tl">我的文档</div>
+                                        <div class="cell__bd tl">福利图片</div>
                                         <div class="cell__ft"></div>
-                                    </div>
+                                    </router-link>
                                     <div class="cell cell_access">
                                         <div class="cell__hd">3.</div>
                                         <div class="cell__bd tl">我的列表</div>
@@ -172,7 +172,7 @@ export default {
         // foot切换
         clickHandler (label) {
         // if you clicked home tab, then print 'Home'
-            console.log(label)
+            // console.log(label)
             this.floorstatus = false; 
             this.selectedLabelDefault = label
             this.scrollTo();
