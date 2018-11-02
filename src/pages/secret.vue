@@ -17,7 +17,7 @@
                 @click="tapImgTpey(item.type)">{{ item.title }}</li>
             </ul>
             </cube-scroll>
-            <alist :list="listimg"></alist>
+            <alist :list="listimg" ref="mychild"></alist>
         </div>
     </div>
 </template>
@@ -132,17 +132,14 @@ export default{
             })
             this.type = type
             this.pagenum = 1
-            // this.scrollTo()
-            this.getImage()
+            this.getImage().then(() =>{
+                this.scrollTOtop()
+            })
         },
-        scrollTo() {
-            this.$refs.scroll.scrollTo(
-                0,
-                this.scrollToY,
-                this.scrollToTime,
-                // ease[this.scrollToEasing]
-            )
-        },
+        scrollTOtop() {
+            this.$refs.mychild.scrollTo();
+        }
+
     },
     created(){
         this.openStorage()  

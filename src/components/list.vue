@@ -57,6 +57,13 @@ export default {
                 this.floorstatus = false; 
             }
         },
+        scrollTo() {
+            this.$refs.scroll.scrollTo(
+                0,
+                this.scrollToY,
+                this.scrollToTime,
+            )
+        },
     },
     computed: {
         options() {
