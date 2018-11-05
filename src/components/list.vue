@@ -52,9 +52,9 @@ export default {
         onScrollHandle(e){
             let pageY = -(e.y)
             if(pageY > 200){
-                this.floorstatus = true; 
+                this.$parent.floorstatus = true; 
             }else{
-                this.floorstatus = false; 
+                this.$parent.floorstatus = false; 
             }
         },
         scrollTo() {

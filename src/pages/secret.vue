@@ -3,6 +3,7 @@
         <aheader :headtext='headtext' @toback='toback'></aheader>
         
         <div class="cube_bd" style="bottom:0">
+            <div class="back_top" v-if="floorstatus" @click="scrollTOtop">top</div>
             <cube-button :primary="true" @click="openImg" v-if="!openType">开启福利？</cube-button>
             <cube-scroll
             v-if="openType"
@@ -36,6 +37,7 @@ export default{
             headtext:"精彩内容",
             listimg: [],
             openType: false,
+            floorstatus: false,
             items:[{
                     title:'大胸妹',
                     state: true,
@@ -122,6 +124,7 @@ export default{
                 })
         },
         tapImgTpey(type){
+            this.floorstatus = false; 
             let arr = this.items
             arr.forEach( e => {
                 if(e.type == type){
